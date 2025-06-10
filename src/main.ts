@@ -1,15 +1,11 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import { createPinia } from 'pinia'
-
 import vuetify from './plugins/vuetify'
-import './assets/main.css'
+import { loadFonts } from './plugins/webfontloader'
+import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css' // アイコン用
 
-const app = createApp(App)
+loadFonts()
 
-app.use(createPinia())
-app.use(router)
-app.use(vuetify)
-
-app.mount('#app')
+createApp(App).use(router).use(vuetify).mount('#app')
