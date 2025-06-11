@@ -23,8 +23,16 @@
             required
           />
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="d-flex flex-column gap-2">
           <v-btn color="primary" block type="submit">ログイン</v-btn>
+          <v-btn
+            color="primary"
+            block
+            variant="outlined"
+            @click="handleGoogleLogin"
+          >
+            Googleでログイン
+          </v-btn>
         </v-card-actions>
       </v-form>
     </v-card>
@@ -41,7 +49,6 @@
   const email = ref('');
   const password = ref('');
   const showPassword = ref(false);
-
   const router = useRouter();
   const { login } = useAuth();
 
@@ -52,17 +59,13 @@
         password: password.value,
       });
 
-      const access = res.data.access;
-      const refresh = res.data.refresh;
-      const username = res.data.username || email.value;
-
-      login(access, refresh, username);
+      const { access, refresh, name } = res.data;
+      login(access, refresh, name || email.value);
       router.push('/');
     } catch (err) {
       const error = err as AxiosError;
       const detail = error.response?.data;
       console.error('ログイン失敗:', detail);
-
       alert(
         'ログインに失敗しました：' +
           (typeof detail === 'object'
@@ -72,5 +75,9 @@
             : '不明なエラー'),
       );
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = 'http://127.0.0.1:8000/api/auth/google/';
   };
 </script>
