@@ -1,0 +1,134 @@
+/* ==========================================
+   Layout & Structure - 共通レイアウト系
+   ========================================== */
+
+/* レスポンシブな中央寄せコンテナ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+}
+
+/* フレックスレイアウト */
+.flex {
+  display: flex;
+}
+
+/* フレックス中央寄せ（縦横） */
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+/* フレックス左右配置（中央揃え） */
+.flex-between {
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* テキスト中央寄せ */
+.text-center {
+  text-align: center;
+}
+
+/* スクロールエリア（最大高さ付き） */
+.scroll-area {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 1rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* ==========================================
+   Section Layout - 汎用セクション構造
+   ========================================== */
+
+/* ページタイトル用見出し */
+.page-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: var(--text-color);
+}
+
+/* セクション間のマージン */
+.section {
+  margin-bottom: 2rem;
+}
+
+/* フォーム内の項目間マージン */
+.form-field {
+  margin-bottom: 1rem;
+}
+
+/* ボタン複数配置時の間隔調整 */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* ==========================================
+   Note Editor - ノート作成画面レイアウト
+   ========================================== */
+
+/* ノートエディタ全体の中央揃えと基本スタイル */
+.note-editor {
+  max-width: 900px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 2rem;
+  min-height: 100vh;
+  position: relative;
+  display: block;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* タイトルと本文入力エリアの間隔 */
+.title-section {
+  margin-bottom: 2rem;
+}
+
+/* コンテンツエリアの最小高さ */
+.content-section {
+  position: relative;
+  min-height: 600px;
+}
+
+/* 新規ページカード（ノート追加用UI） */
+.new-page-card {
+  background-color: var(--hover-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.new-page-card:hover {
+  border-color: var(--accent-color);
+}
+
+/* Vuetifyカードのカスタム背景・枠線スタイル */
+::v-deep(.v-card) {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  border: 1px solid var(--border-color);
+}
+
+/* アプリ全体の最小高さを設定 */
+.app-wrapper {
+  min-height: 100vh;
+}
+
+/* Vuetifyアプリ本体にテーマ色を反映 */
+.v-application {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+}

@@ -1,0 +1,234 @@
+/* ====================================
+   Theme Variables - ベース定義
+   ==================================== */
+
+/* グローバル共通変数の定義（すべてのテーマに影響） */
+:root {
+  /* システム標準フォントを優先するフォント指定 */
+  --font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* アニメーションやホバー時の共通トランジション速度 */
+  --transition-fast: 0.2s ease-in-out;
+
+  /* Vuetifyのテキストフィールドに共通適用するスタイル変数 */
+  --text-field-bg: var(--hover-bg); /* 背景色 */
+  --text-field-color: var(--text-color); /* テキスト色 */
+  --text-field-border: var(--border-color); /* 枠線色 */
+}
+
+/* ====================================
+   Light Theme
+   ==================================== */
+[data-theme='light'] {
+  --bg-color: #fffefc;
+  --text-color: #1c1c1e;
+  --accent-color: #dfa300;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --hover-bg: #f2f2f7;
+  --sidebar-bg: #ffffff;
+  --header-bg: #f9f9f9;
+  --hover-text-color: #dfa300; /* アクセントと同じ黄系 */
+}
+
+/* ====================================
+   Dark Theme
+   ==================================== */
+[data-theme='dark'] {
+  --bg-color: #1c1c1e;
+  --text-color: #f2f2f7;
+  --accent-color: #ffd60a;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --hover-bg: #2c2c2e;
+  --sidebar-bg: #2c2c2e;
+  --header-bg: #1c1c1e;
+  --hover-text-color: #ffe066; /* やや明るめの黄 */
+}
+
+/* ====================================
+   Sepia Theme – 書籍風のセピア調
+   ==================================== */
+[data-theme='sepia'] {
+  --bg-color: #f6f1e7;
+  --text-color: #4e433f;
+  --accent-color: #a47149;
+  --border-color: #dbcbb7;
+  --hover-bg: #eee3d5;
+  --sidebar-bg: #f4ebe1;
+  --header-bg: #fbf7f2;
+  --hover-text-color: #c1845c; /* 少し明るめのセピア */
+}
+
+/* ====================================
+   greenlight Theme – 自然なグリーン調
+   ==================================== */
+[data-theme='greenlight'] {
+  --bg-color: #eef5ee;
+  --text-color: #2f5d50;
+  --accent-color: #2f5d41;
+  --border-color: #d3e6d5;
+  --hover-bg: #e3f1e3;
+  --sidebar-bg: #e6f0e7;
+  --header-bg: #f4f9f4;
+  --hover-text-color: #4b8769; /* 深緑アクセントより明るめ */
+}
+
+/* ====================================
+   greendark Theme – 自然な深緑調のダーク
+   ==================================== */
+[data-theme='greendark'] {
+  --bg-color: #000000;
+  --text-color: #7ac07d;
+  --accent-color: #7ac07d;
+  --border-color: #1d2b1f;
+  --hover-bg: #111111;
+  --sidebar-bg: #0a0a0a;
+  --header-bg: #0a0a0a;
+  --hover-text-color: #a9e6b0; /* 明るめ緑にホバー強調 */
+}
+
+/* ====================================
+   bluelight Theme – 爽やかで清潔感ある青系
+   ==================================== */
+[data-theme='bluelight'] {
+  --bg-color: #eef7fa;
+  --text-color: #0c417a;
+  --accent-color: #0c417a;
+  --border-color: #cce4ee;
+  --hover-bg: #dff4f9;
+  --sidebar-bg: #e5f2f7;
+  --header-bg: #f4fafc;
+  --hover-text-color: #2c74b5; /* やや明るいブルー強調 */
+}
+
+/* ====================================
+   bluedark Theme – クールなブルーダーク
+   ==================================== */
+[data-theme='bluedark'] {
+  --bg-color: #0a0a0a;
+  --text-color: #018deb;
+  --accent-color: #018deb;
+  --border-color: #2c3e50;
+  --hover-bg: #1c1f27;
+  --sidebar-bg: #121212;
+  --header-bg: #121212;
+  --hover-text-color: #4fb9ff; /* 明るくネオン寄りな水色 */
+}
+
+/* ====================================
+   Vuetify 対応スタイルの上書き
+   ==================================== */
+
+/* アプリ全体に背景色・文字色・フォントを適用 */
+.v-application {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  font-family: var(--font-family);
+}
+
+/* ダークテーマでの区切り線のカスタマイズ */
+[data-theme='dark'] .divider,
+.v-theme--dark .divider {
+  background-color: #424242;
+}
+
+/* Vuetifyのv-text-fieldコンポーネントの見た目調整 */
+::v-deep(.v-field) {
+  background-color: var(--text-field-bg) !important;
+  color: var(--text-field-color) !important;
+  border: 1px solid var(--text-field-border);
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+/* テキストフィールドの文字色 */
+::v-deep(.v-field__input) {
+  color: var(--text-field-color) !important;
+}
+
+/* プレースホルダーの色 */
+::v-deep(.v-field__input::placeholder) {
+  color: var(--text-field-color);
+  opacity: 0.6;
+}
+
+/* ====================================
+   Markdown プレビューエリアの見た目
+   ==================================== */
+
+.content-preview {
+  padding: 2rem;
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  min-height: 600px;
+  cursor: text;
+  line-height: 1.8;
+  font-family: var(--font-family);
+  color: var(--text-color);
+  transition: border-color var(--transition-fast);
+}
+
+/* ホバー時に枠線色を強調 */
+.content-preview:hover {
+  border-color: var(--accent-color);
+}
+
+/* 見出し（h1〜h3）のスタイル */
+.content-preview h1,
+.content-preview h2,
+.content-preview h3 {
+  color: var(--text-color);
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.content-preview h1 {
+  font-size: 2.5rem;
+}
+.content-preview h2 {
+  font-size: 2rem;
+}
+.content-preview h3 {
+  font-size: 1.5rem;
+}
+
+/* リストスタイル */
+.content-preview ul {
+  list-style: disc;
+  padding-left: 2rem;
+  margin: 0.5rem 0;
+}
+
+.content-preview li {
+  margin: 0.3rem 0;
+}
+
+/* 引用ブロック */
+.content-preview blockquote {
+  border-left: 4px solid var(--accent-color);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--text-color);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* コードブロック */
+.content-preview pre {
+  background: #2a2a2a;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.content-preview code {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+/* プレースホルダー用の色（入力なし時など） */
+.content-preview .placeholder {
+  color: #888;
+}

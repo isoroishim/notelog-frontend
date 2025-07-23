@@ -1,0 +1,33 @@
+/* ===============================
+   Vuetify フォームコンポーネント用スタイル
+   =============================== */
+
+/* テキストフィールドの共通スタイル */
+.v-field {
+  background-color: var(--hover-bg) !important; /* 背景色（テーマ変数） */
+  color: var(--text-color) !important; /* テキスト色 */
+  border: 1px solid var(--border-color); /* 外枠の色 */
+  border-radius: 8px; /* 角丸 */
+  transition: background-color 0.3s; /* 背景色変更のアニメーション */
+}
+
+/* テキストフィールド内の入力エリア */
+.v-field__input {
+  color: var(--text-color) !important; /* 入力文字の色 */
+}
+
+/* プレースホルダーのスタイル */
+.v-field__input::placeholder {
+  color: var(--text-color); /* プレースホルダー文字の色 */
+  opacity: 0.6; /* 少し薄くする */
+}
+
+/* Vuetify カードの共通背景・枠線スタイル */
+.v-card {
+  background-color: var(--bg-color) !important; /* カード背景色 */
+  color: var(--text-color) !important; /* テキスト色 */
+  border: 1px solid var(--border-color); /* 枠線色 */
+  transition:                                        /* 色変更のアニメーション */
+    background-color 0.3s,
+    color 0.3s;
+}

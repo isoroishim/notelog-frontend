@@ -1,0 +1,200 @@
+/* ===============================
+   ヘッダー・ナビゲーション
+   =============================== */
+
+/* AppBar（上部ナビゲーションバー） */
+.custom-app-bar {
+  background-color: var(--header-bg) !important;
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color var(--transition-fast);
+}
+
+/* タイトル部分のリンク（例：App名など） */
+.title-link {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+  color: var(--accent-color);
+  transition: color var(--transition-fast);
+}
+
+/* ホバー時にアクセントカラー → hover-text-color に変化 */
+.title-link:hover {
+  color: var(--hover-text-color);
+}
+
+/* サイドバー（Drawer） */
+.custom-drawer {
+  background-color: var(--sidebar-bg) !important;
+  border-right: 1px solid var(--border-color);
+  transition: background-color var(--transition-fast);
+}
+
+/* ナビゲーションリンク（RouterLinkに付与） */
+.nav-link {
+  text-decoration: none;
+  display: block;
+}
+
+/* サイドバー内の文字・アイコンのホバー色変更 */
+.nav-link:hover .v-list-item-title,
+.nav-link:hover .v-icon {
+  color: var(--hover-text-color);
+}
+
+/* ===============================
+   アクセントカラー関連ユーティリティ
+   =============================== */
+
+/* テキストカラーをアクセントに強制指定 */
+.accent-color {
+  color: var(--accent-color) !important;
+}
+
+/* 枠線にアクセントカラーを適用 */
+.border-accent {
+  border: 1px solid var(--accent-color) !important;
+}
+
+/* ===============================
+   Googleログインボタン関連
+   =============================== */
+
+.google-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  text-transform: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.1s ease;
+}
+
+/* ホバー：背景・枠線・影を強調 */
+.google-btn:hover {
+  background-color: var(--hover-bg);
+  border-color: var(--accent-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn:active {
+  transform: scale(0.98);
+}
+
+.google-btn svg {
+  flex-shrink: 0;
+  margin-right: 0.5rem;
+}
+
+/* ===============================
+   テーマ設定ダイアログ
+   =============================== */
+
+.theme-settings-dialog .v-card {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  transition: background-color 0.2s ease;
+}
+
+.theme-settings-dialog .v-card-title {
+  font-weight: bold;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.theme-settings-dialog .v-select {
+  margin-top: 1rem;
+}
+
+/* ===============================
+   セクションタイトル
+   =============================== */
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* ===============================
+   ノート一覧
+   =============================== */
+
+.note-item {
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.note-item:hover {
+  background-color: var(--hover-bg);
+}
+
+.note-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.note-content {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  opacity: 0.7;
+}
+
+/* ===============================
+   Vuetify 対応カスタム（::v-deep）
+   =============================== */
+
+/* テキストフィールド（v-field） */
+::v-deep(.v-field) {
+  background-color: var(--hover-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+::v-deep(.v-field__input) {
+  color: var(--text-color) !important;
+}
+
+::v-deep(.v-field__input::placeholder) {
+  color: var(--text-color);
+  opacity: 0.6;
+}
+
+/* カード全体（Vuetify） */
+::v-deep(.v-card) {
+  background-color: var(--bg-color) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}

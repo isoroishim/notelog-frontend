@@ -1,0 +1,34 @@
+/* ===============================
+   Utility Styles - 色・装飾・区切り線
+   =============================== */
+
+/* テキストを控えめに表示（補助情報など） */
+.text-muted {
+  color: var(--text-color);
+  opacity: 0.6;
+}
+
+/* アイコンを薄く表示（非アクティブな印象に） */
+.icon-muted {
+  color: var(--text-color);
+  opacity: 0.5;
+}
+
+/* 水平区切り線 */
+.divider {
+  border: none;
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 1.5rem 0;
+}
+
+/* テキスト色を強制的にプライマリカラーに固定 */
+.text-primary {
+  color: var(--text-color) !important;
+}
+
+/* 中程度の強調（Vuetify の medium-emphasis 相当） */
+.text-medium-emphasis {
+  color: var(--text-color);
+  opacity: 0.6;
+}

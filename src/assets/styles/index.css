@@ -1,0 +1,44 @@
+/* ===============================
+   各スタイルモジュールを読み込み
+   =============================== */
+
+/* 基本スタイル（リセット、タイポグラフィ、共通UI） */
+@import './base.css';
+
+/* レイアウト構造全般（.note-editor など） */
+@import './layout.css';
+
+/* カラーテーマ、ダークモード、プレビュースタイル */
+@import './theme.css';
+
+/* エディタ機能関連（ブロックメニュー、保存インジケーターなど） */
+@import './editor.css';
+
+/* コンポーネント単位のスタイル（AppHeader, Sidebar, Dialogなど） */
+@import './components.css';
+
+/* 汎用ユーティリティクラス（.text-center, .mt-4 など） */
+@import './utilities.css';
+
+/* フォーム系スタイル（ログイン画面・登録画面） */
+@import './form.css';
+
+/* ===============================
+   リンクおよび強調カラー補助
+   =============================== */
+
+/* 通常のリンク、および「green」クラス */
+a,
+.green {
+  text-decoration: none;
+  color: hsla(160, 100%, 37%, 1); /* 鮮やかな緑系 */
+  transition: 0.4s;
+  padding: 3px;
+}
+
+/* ホバー時の背景変化（マウス操作対応環境のみ） */
+@media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+}

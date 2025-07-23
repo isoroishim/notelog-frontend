@@ -1,0 +1,359 @@
+/* ===============================
+   ノートエディタ全体レイアウト
+   =============================== */
+
+.note-editor {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--bg-color); /* テーマに合わせた背景色 */
+  min-height: 100vh; /* 全画面表示 */
+  color: var(--text-color);
+}
+
+/* ===============================
+   タイトル入力エリア
+   =============================== */
+
+.title-section {
+  margin-bottom: 2rem;
+}
+
+.title-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: transparent;
+  color: var(--text-color);
+  padding: 1rem 0;
+  font-family: var(--font-family);
+  transition: opacity 0.2s;
+}
+
+.title-input:focus {
+  opacity: 0.9;
+}
+
+.title-input::placeholder {
+  color: #888;
+}
+
+/* ===============================
+   コンテンツ入力エリア
+   =============================== */
+
+.content-section {
+  position: relative;
+  min-height: 600px;
+}
+
+.content-editor {
+  width: 100%;
+  min-height: 600px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  background: var(--hover-bg);
+  color: var(--text-color);
+  resize: vertical;
+  font-family: 'Monaco', 'Courier New', monospace;
+  outline: none;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+.content-editor:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+}
+
+.content-editor::placeholder {
+  color: #888;
+}
+
+/* ===============================
+   プレビューモード表示（Markdown変換後）
+   =============================== */
+
+.content-preview {
+  padding: 2rem;
+  background: var(--hover-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  min-height: 600px;
+  cursor: text;
+  font-family: var(--font-family);
+  line-height: 1.5;
+  color: var(--text-color);
+  transition: border-color 0.3s;
+}
+
+.content-preview:hover {
+  border-color: var(--accent-color);
+}
+
+/* 見出し（h1〜h3） */
+.content-preview h1,
+.content-preview h2,
+.content-preview h3 {
+  color: var(--text-color);
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.content-preview h1 {
+  font-size: 2.5rem;
+}
+.content-preview h2 {
+  font-size: 2rem;
+}
+.content-preview h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* リスト */
+.content-preview ul {
+  list-style: disc;
+  padding-left: 2rem;
+  margin: 0.5rem 0;
+}
+
+.content-preview li {
+  margin: 0.3rem 0;
+}
+
+/* 引用 */
+.content-preview blockquote {
+  border-left: 4px solid var(--accent-color);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--text-color);
+  font-style: italic;
+  opacity: 0.85;
+}
+
+/* コードブロック */
+.content-preview pre {
+  background: #2a2a2a;
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.content-preview code {
+  font-family: 'Monaco', 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.content-preview .placeholder {
+  color: #888;
+}
+
+/* ===============================
+   ブロック挿入メニュー（セミコロン起点）
+   =============================== */
+
+.block-menu-container {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.block-menu {
+  position: relative;
+  background: var(--hover-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  min-width: 380px;
+  max-height: 500px;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+/* メニュー上部（タイトル） */
+.menu-header {
+  padding: 1.25rem 1.5rem;
+  background: #2a2a2a;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* 各ブロック候補アイテム */
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: all 0.2s;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.menu-item:hover,
+.menu-item.active {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--accent-color);
+  transform: translateX(4px);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+/* ブロックアイコン表示領域 */
+.block-icon {
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #fff;
+  margin-right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  font-size: 1.2rem;
+}
+
+.menu-item:hover .block-icon {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ブロック情報ラベルと補足 */
+.block-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.block-label {
+  font-weight: 500;
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+
+.block-hint {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.menu-item:hover .block-hint {
+  color: #aaa;
+}
+
+/* ===============================
+   保存インジケーター（右下）
+   =============================== */
+
+.save-indicator {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--border-color);
+  color: var(--text-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.save-icon {
+  animation: pulse 1s infinite;
+}
+
+/* ===============================
+   ヘルプヒント（ショートカット表示）
+   =============================== */
+
+.help-hint {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  color: var(--text-color);
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.help-hint kbd {
+  background: var(--hover-bg);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  font-family: monospace;
+  color: var(--text-color);
+}
+
+/* ===============================
+   アニメーション・トランジション
+   =============================== */
+
+/* メニュー出入りのフェード効果 */
+.menu-enter-active,
+.menu-leave-active {
+  transition: opacity 0.3s;
+}
+
+.menu-enter-from,
+.menu-leave-to {
+  opacity: 0;
+}
+
+/* メニュー内のアニメーション（拡大縮小） */
+.menu-enter-active .block-menu,
+.menu-leave-active .block-menu {
+  transition:
+    transform 0.3s,
+    opacity 0.3s;
+}
+
+.menu-enter-from .block-menu,
+.menu-leave-to .block-menu {
+  transform: scale(0.9);
+  opacity: 0;
+}
+
+/* 通常フェードトランジション */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* パルスアニメーション（保存アイコン等） */
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}

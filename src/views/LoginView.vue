@@ -1,18 +1,21 @@
 <template>
   <v-container class="fill-height d-flex align-center justify-center">
     <v-card class="pa-6" width="420" elevation="8" rounded="lg">
-      <!-- ヘッダー -->
+      <!-- ロゴ・説明 -->
       <div class="text-center mb-5">
         <h1 class="text-h4 font-weight-bold mb-2 text-primary">Notelog</h1>
-        <p class="text-subtitle-1 text-medium-emphasis">
+        <p class="text-subtitle-1 text-primary-emphasis">
           ナレッジ管理プラットフォーム
         </p>
       </div>
 
+      <!-- タイトル -->
       <v-card-title class="text-h5 text-center mb-2">ログイン</v-card-title>
 
+      <!-- ログインフォーム -->
       <v-form @submit.prevent="handleLogin">
         <v-card-text>
+          <!-- メール入力 -->
           <v-text-field
             v-model="email"
             label="メールアドレス"
@@ -20,6 +23,8 @@
             variant="outlined"
             prepend-inner-icon="mdi-email-outline"
           />
+
+          <!-- パスワード入力 -->
           <v-text-field
             v-model="password"
             :type="showPassword ? 'text' : 'password'"
@@ -31,9 +36,10 @@
           />
         </v-card-text>
 
+        <!-- ボタン・リンク -->
         <v-card-actions class="px-6 pb-6">
-          <!-- メインログインボタン -->
           <div class="w-100">
+            <!-- ログインボタン -->
             <v-btn
               color="primary"
               size="large"
@@ -50,16 +56,17 @@
             <!-- 区切り線 -->
             <hr class="divider" />
 
+            <!-- Google ログインボタン -->
             <GoogleLoginButton
               :loading="googleLoading"
               @click="handleGoogleLogin"
             />
 
-            <!-- フッターリンク -->
+            <!-- 登録リンク -->
             <div class="text-center mt-6">
-              <span class="text-body-2 text-medium-emphasis"
-                >アカウントをお持ちでない方は</span
-              >
+              <span class="text-body-2 text-medium-emphasis">
+                アカウントをお持ちでない方は
+              </span>
               <v-btn
                 variant="text"
                 color="primary"
@@ -77,7 +84,7 @@
   </v-container>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
   import axios from '@/plugins/axios';
@@ -85,14 +92,17 @@
   import { AxiosError } from 'axios';
   import GoogleLoginButton from '@/components/GoogleLoginButton.vue';
 
+  // 状態管理
   const email = ref('');
   const password = ref('');
   const showPassword = ref(false);
   const loading = ref(false);
   const googleLoading = ref(false);
+
   const router = useRouter();
   const { login } = useAuth();
 
+  // 通常ログイン処理
   const handleLogin = async () => {
     loading.value = true;
     try {
@@ -113,6 +123,7 @@
     }
   };
 
+  // Googleログイン処理
   const handleGoogleLogin = () => {
     googleLoading.value = true;
 
@@ -128,13 +139,14 @@
       'http://localhost:5173/auth/callback',
     );
     const scope = encodeURIComponent('openid email profile');
+
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&access_type=online&prompt=consent`;
 
-    // 画面中央にポップアップを配置
+    // ポップアップ位置の計算
     const width = 520;
     const height = 650;
-    const left = Math.round(screen.width / 2 - width / 2);
-    const top = Math.round(screen.height / 2 - height / 2);
+    const left = Math.round(window.screen.width / 2 - width / 2);
+    const top = Math.round(window.screen.height / 2 - height / 2);
 
     const popup = window.open(
       authUrl,
@@ -148,9 +160,9 @@
       return;
     }
 
-    // ポップアップ監視
+    // ポップアップ監視用
     const checkClosed = setInterval(() => {
-      if (popup?.closed) {
+      if (popup.closed) {
         clearInterval(checkClosed);
         googleLoading.value = false;
       }
@@ -164,61 +176,26 @@
         const { access, refresh, name } = event.data;
         login(access, refresh, name);
         router.push('/');
-        popup?.close();
-        window.removeEventListener('message', messageListener);
-        clearInterval(checkClosed);
-        googleLoading.value = false;
+        popup.close();
       } else if (event.data.type === 'GOOGLE_AUTH_ERROR') {
         alert('Google認証に失敗しました');
-        popup?.close();
-        window.removeEventListener('message', messageListener);
-        clearInterval(checkClosed);
-        googleLoading.value = false;
+        popup.close();
       }
+
+      // 後始末
+      window.removeEventListener('message', messageListener);
+      clearInterval(checkClosed);
+      googleLoading.value = false;
     };
 
     window.addEventListener('message', messageListener);
 
-    // 5分後にタイムアウト
+    // タイムアウト処理（5分）
     setTimeout(() => {
-      if (!popup?.closed) popup?.close();
+      if (!popup.closed) popup.close();
       window.removeEventListener('message', messageListener);
       clearInterval(checkClosed);
       googleLoading.value = false;
-    }, 300000);
+    }, 300_000);
   };
 </script>
-
-<style scoped>
-  .google-btn {
-    color: #3c4043 !important;
-    border-color: #dadce0 !important;
-    text-transform: none !important;
-  }
-
-  .google-btn:hover {
-    border-color: #9aa0a6 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-  }
-
-  .v-theme--dark .google-btn {
-    color: #e8eaed !important;
-    border-color: #5f6368 !important;
-  }
-
-  .divider {
-    border: none;
-    height: 1px;
-    background-color: #e0e0e0;
-    margin: 20px 0;
-    width: 100%;
-  }
-
-  .v-theme--dark .divider {
-    background-color: #424242;
-  }
-
-  .w-100 {
-    width: 100%;
-  }
-</style>

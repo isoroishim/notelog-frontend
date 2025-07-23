@@ -91,47 +91,63 @@
 </template>
 
 <script lang="ts" setup>
+  // Vue関連のAPIとライブラリをインポート
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import axios from '@/plugins/axios';
-  import { useAuth } from '@/composables/useAuth';
+  import axios from '@/plugins/axios'; // カスタムAxiosインスタンス
+  import { useAuth } from '@/composables/useAuth'; // 認証情報管理用Composable
   import { AxiosError } from 'axios';
   import GoogleLoginButton from '@/components/GoogleLoginButton.vue';
 
+  // 入力フィールドの状態を定義
   const name = ref('');
   const email = ref('');
   const password = ref('');
   const password2 = ref('');
+
+  // パスワードの表示・非表示切り替え用フラグ
   const showPassword = ref(false);
   const showPassword2 = ref(false);
+
+  // ローディング状態（通常ログイン・Google認証用）
   const loading = ref(false);
   const googleLoading = ref(false);
 
+  // Vue Router と 認証関数 login を取得
   const router = useRouter();
   const { login } = useAuth();
 
+  /**
+   * 通常の会員登録処理
+   */
   const register = async () => {
+    // パスワードと確認用パスワードが一致しない場合は処理中断
     if (password.value !== password2.value) {
       alert('パスワードが一致しません');
       return;
     }
 
     loading.value = true;
+
     try {
+      // バックエンドへ登録リクエスト送信
       await axios.post('/api/auth/register/', {
         name: name.value,
         email: email.value,
         password: password.value,
       });
 
+      // 登録成功後、ログイン処理を実行してトークンを取得
       const res = await axios.post('/api/auth/login/', {
         email: email.value,
         password: password.value,
       });
 
+      // ログイン状態を保存し、トップページへ遷移
       login(res.data.access, res.data.refresh, res.data.name || email.value);
       router.push('/');
     } catch (err) {
+      // エラー時の処理（詳細ログ出力）
       const error = err as AxiosError;
       const detail = error.response?.data;
       console.error('登録失敗:', detail);
@@ -141,6 +157,9 @@
     }
   };
 
+  /**
+   * Google アカウントによる認証処理
+   */
   const handleGoogleLogin = () => {
     googleLoading.value = true;
 
@@ -152,17 +171,20 @@
       return;
     }
 
+    // Google OAuth2 認証用URL構築
     const redirectUri = encodeURIComponent(
       'http://localhost:5173/auth/callback',
     );
     const scope = encodeURIComponent('openid email profile');
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&access_type=online&prompt=consent`;
 
+    // ポップアップ位置とサイズを調整
     const width = 520;
     const height = 650;
-    const left = Math.round(screen.width / 2 - width / 2);
-    const top = Math.round(screen.height / 2 - height / 2);
+    const left = Math.round(window.screen.width / 2 - width / 2);
+    const top = Math.round(window.screen.height / 2 - height / 2);
 
+    // ポップアップを開く
     const popup = window.open(
       authUrl,
       'googleRegister',
@@ -175,6 +197,7 @@
       return;
     }
 
+    // ポップアップが閉じられたかを監視
     const checkClosed = setInterval(() => {
       if (popup?.closed) {
         clearInterval(checkClosed);
@@ -182,67 +205,39 @@
       }
     }, 1000);
 
+    // 認証成功・失敗のメッセージを受信するリスナーを定義
     const messageListener = (event: MessageEvent) => {
       if (event.origin !== window.location.origin) return;
 
       if (event.data.type === 'GOOGLE_AUTH_SUCCESS') {
         const { access, refresh, name } = event.data;
-        login(access, refresh, name);
-        router.push('/');
+
+        login(access, refresh, name); // 認証情報を保存
+        router.push('/'); // トップページへ遷移
+
         popup?.close();
-        window.removeEventListener('message', messageListener);
-        clearInterval(checkClosed);
-        googleLoading.value = false;
+        cleanup();
       } else if (event.data.type === 'GOOGLE_AUTH_ERROR') {
         alert('Google認証に失敗しました');
         popup?.close();
-        window.removeEventListener('message', messageListener);
-        clearInterval(checkClosed);
-        googleLoading.value = false;
+        cleanup();
       }
     };
 
-    window.addEventListener('message', messageListener);
-
-    setTimeout(() => {
-      if (!popup?.closed) popup?.close();
+    // クリーンアップ処理（リスナーと監視を解除）
+    const cleanup = () => {
       window.removeEventListener('message', messageListener);
       clearInterval(checkClosed);
       googleLoading.value = false;
+    };
+
+    // イベントリスナーを登録
+    window.addEventListener('message', messageListener);
+
+    // タイムアウト（5分）後に強制クローズ
+    setTimeout(() => {
+      if (!popup?.closed) popup.close();
+      cleanup();
     }, 300000);
   };
 </script>
-
-<style scoped>
-  .google-btn {
-    color: #3c4043 !important;
-    border-color: #dadce0 !important;
-    text-transform: none !important;
-  }
-
-  .google-btn:hover {
-    border-color: #9aa0a6 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-  }
-
-  .v-theme--dark .google-btn {
-    color: #e8eaed !important;
-    border-color: #5f6368 !important;
-  }
-
-  .divider {
-    border: none;
-    height: 1px;
-    background-color: #e0e0e0;
-    margin: 20px 0;
-    width: 100%;
-  }
-
-  .v-theme--dark .divider {
-    background-color: #424242;
-  }
-
-  .w-100 {
-    width: 100%;
-  }
-</style>

@@ -1,4 +1,5 @@
 // notelog-frontend/src/router/index.ts
+
 import {
   createRouter,
   createWebHistory,
@@ -11,24 +12,25 @@ import RegisterView from '@/views/RegisterView.vue';
 import NoteCreateView from '@/views/NoteCreateView.vue';
 import GoogleCallback from '@/views/GoogleCallback.vue';
 
+// 各ページのルーティング定義
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
     component: HomeView,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true }, // 認証必須
   },
   {
     path: '/notes/create',
     name: 'note-create',
     component: NoteCreateView,
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true }, // 認証必須
   },
   {
     path: '/login',
     name: 'login',
     component: LoginView,
-    meta: { guest: true },
+    meta: { guest: true }, // ゲスト専用（ログイン済はアクセス不可）
   },
   {
     path: '/register',
@@ -42,38 +44,37 @@ const routes: RouteRecordRaw[] = [
     component: GoogleCallback,
     meta: {
       requiresAuth: false, // 認証不要
-      guest: false, // ゲスト専用でもない
-      public: true, // パブリックアクセス可能
+      guest: false,
+      public: true, // 完全公開ページ
     },
   },
-  // 404ページ
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
-    redirect: '/',
+    redirect: '/', // 未定義パスはトップへリダイレクト
   },
 ];
 
+// ルーター生成
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 });
 
-// 認証ガード（改良版）
+// グローバルナビゲーションガード（認証制御）
 router.beforeEach((to, from, next) => {
   const accessToken = localStorage.getItem('access_token');
   const isAuthenticated = !!accessToken;
 
-  // パブリックページ（認証状態に関係なくアクセス可能）
+  // パブリックページはそのまま通す
   if (to.matched.some((record) => record.meta.public)) {
     next();
     return;
   }
 
-  // 認証が必要なページへのアクセス
+  // 認証が必要なページで未ログイン → ログイン画面へ
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!isAuthenticated) {
-      // ログインページにリダイレクト（元のページ情報を保持）
       next({
         name: 'login',
         query: { redirect: to.fullPath },
@@ -82,17 +83,16 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  // ゲスト専用ページ（ログイン済みユーザーはアクセス不可）
+  // ゲスト専用ページでログイン済み → ホームなどへリダイレクト
   if (to.matched.some((record) => record.meta.guest)) {
     if (isAuthenticated) {
-      // クエリパラメータでリダイレクト先が指定されている場合はそこに、
-      // なければホームページにリダイレクト
       const redirectPath = (to.query.redirect as string) || '/';
       next(redirectPath);
       return;
     }
   }
 
+  // 上記に該当しない場合は通常遷移
   next();
 });
 
